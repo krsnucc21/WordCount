@@ -1,41 +1,70 @@
-var count = document.getElementById('count');
-var input = document.getElementById('input');
-var globalWordCounter = 0;
-var WORD_LIMIT = 10;
+"use strict";
+const getUserInput = () => document.getElementById("inputString").value;
+const printInput = input =>
+  (document.getElementById("ouput").innerHTML = input);
+const cleanInput = str =>
+  str
+    .replace(/[?.!,"\(\)]/g, "")
+    .replace(/[ ]{2,}/g, "")
+    .trim()
+    .toLowerCase();
+const wordFreq = string =>
+  string
+    .split(/\s/)
+    .reduce(
+      (output, word) =>
+        Object.assign(output, { [word]: output[word] ? output[word] + 1 : 1 }),
+      {}
+    );
+const sortByValue = obj =>
+  Object.entries(obj)
+    .map(currentValue => [currentValue[1], currentValue[0]])
+    .sort((a, b) => parseInt(b) - parseInt(a))
+    .map((currentValue, index) => [
+      index + 1,
+      currentValue[0],
+      currentValue[1]
+    ]);
 
-input.addEventListener('keydown', function(e) {
-  if (globalWordCounter > WORD_LIMIT && e.code !== "Backspace") {
-    e.preventDefault();
-    return alert("You have reached the word limit");
-  }
+const divFreq = "div-table";
+const headersFreq = ["Rank", "Count", "Word"];
+const dataFreq = [[1, 52, "words"], [2, 50, "dog"]];
+
+const addTable = (divId, headers, data) => {
+  const myTableDiv = document.getElementById(divId);
+  const table = document.createElement("table");
+
+  //TABLE Headers
+  const tr = document.createElement("tr");
+  table.appendChild(tr);
+  headers.forEach(currentValue => {
+    const th = document.createElement("th");
+    th.appendChild(document.createTextNode(currentValue));
+    tr.appendChild(th);
+  });
+
+  //TABLE ROWS
+  data.forEach(currentValue => {
+    const tr = document.createElement("tr");
+    currentValue.forEach(currentValue => {
+      const td = document.createElement("td");
+      td.appendChild(document.createTextNode(currentValue));
+      tr.appendChild(td);
+    });
+    table.appendChild(tr);
+  });
+
+  myTableDiv.appendChild(table);
+};
+
+const processData = () => {
+  const sortedFreq = sortByValue(wordFreq(cleanInput(getUserInput())));
+  //console.table(sortedFreq);
+  //let str = JSON.stringify(freq, null, 4);
+  document.getElementById("div-table").innerHTML = "";
+  addTable(divFreq, headersFreq, sortedFreq);
+};
+
+$(document).ready(function() {
+  $("#myButton").on("click", processData);
 });
-
-input.addEventListener('keyup', function(e) {
-  wordCounter(e.target.value);
-});
-
-function isWord(str) {
-  var alphaNumericFound = false;
-  for (var i = 0; i < str.length; i++) {
-    var code = str.charCodeAt(i);
-    if ((code > 47 && code < 58) || // numeric (0-9)
-        (code > 64 && code < 91) || // upper alpha (A-Z)
-        (code > 96 && code < 123)) { // lower alpha (a-z)
-      alphaNumericFound = true;
-      return alphaNumericFound;
-    }
-  }
-  return alphaNumericFound;
-}
-
-function wordCounter(text) {
-  var text = input.value.split(' ');
-  var wordCount = 0;
-  for (var i = 0; i < text.length; i++) {
-    if (!text[i] == ' ' && isWord(text[i])) {
-      wordCount++;
-    }
-  }
-  globalWordCounter = wordCount;
-  count.innerText = wordCount;
-}
