@@ -1,0 +1,19 @@
+{
+  "name": "word-frequency-counter",
+  "version": "1.0.0",
+  "description": "An application that counts the frequencies of words in a text file",
+  "main": "src/frequencyCounter.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/nazwhale/word-frequency-counter.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/nazwhale/word-frequency-counter/issues"
+  },
+  "homepage": "https://github.com/nazwhale/word-frequency-counter#readme"
+}
