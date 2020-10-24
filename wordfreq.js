@@ -3,6 +3,8 @@ const LIST_WORD_FREQUENCY_COUNTERS = document.getElementById(ID_WORD_FREQUENCY_C
 const ID_WORD_FREQUENCY_LIST = "word_freq_list";
 const LIST_WORD_FREQUENCY_LIST = document.getElementById(ID_WORD_FREQUENCY_LIST);
 const ID_INPUT_TEXT = "input_text";
+const ID_CLIPBOARD_TEXT = "clipboard_text";
+const TEXT_CLIPBOARD = document.getElementById(ID_CLIPBOARD_TEXT);
 
 function tokenize(text) {
     // Modified regex from Mike Grace's answer on StackOverflow:
@@ -51,9 +53,25 @@ function showWordFreq() {
     }
 
     LIST_WORD_FREQUENCY_LIST.innerHTML = "";
+    TEXT_CLIPBOARD.value = "";
     for (let i = 0; i < wordArray.length; i++) {
         let li = document.createElement("li");
         li.innerText = wordArray[i].name + ": " + wordArray[i].total;
         LIST_WORD_FREQUENCY_LIST.append(li);
+
+        TEXT_CLIPBOARD.value += wordArray[i].name + "\t" + wordArray[i].total + "\n";
     }
+}
+
+function copyToClipboard() {
+    const el = document.createElement('textarea');
+    el.value = TEXT_CLIPBOARD.value;
+    document.body.appendChild(el);
+    el.select();
+
+    var retVal = document.execCommand('copy');
+    console.log('Copy to clipboard returns: ' + retVal);
+
+    document.body.removeChild(el);
+    alert("Copied the text: " + TEXT_CLIPBOARD.value);
 }
