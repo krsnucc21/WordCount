@@ -28,7 +28,7 @@ function showWordFreq() {
     const OBJECT_WORD_FREQUENCY = wordFreq(DATA);
     let keys = [];
     let values = [];
-    OBJECT_WORD_FREQUENCY.Sort();
+    //OBJECT_WORD_FREQUENCY.Sort();
     for (let [key, value] of Object.entries(OBJECT_WORD_FREQUENCY)) {
         keys.push(key);
         values.push(value);
